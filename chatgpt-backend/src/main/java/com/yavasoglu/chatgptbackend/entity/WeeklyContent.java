@@ -1,13 +1,11 @@
 package com.yavasoglu.chatgptbackend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import lombok.Data;
+
+import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,11 +13,19 @@ import lombok.Data;
 public class WeeklyContent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String NameOfWeek;
-    private String DateOfAdd;
+    private String id;
+    private String title;
+    private String week_number;
+    private Date dateOfAdd;
     @Lob
-    private String kazanimlar;
+    @Column(columnDefinition="TEXT")
+    private String outcome;
+    @Column(length = 2083)
+    private String feedbackURL;
+    @Column(length = 2083)
+    private String slidesURL;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name= "fk_week_id")
+    private List<Quiz> quizzes;
 }
