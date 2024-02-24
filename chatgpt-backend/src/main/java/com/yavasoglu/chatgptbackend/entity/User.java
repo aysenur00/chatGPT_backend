@@ -1,9 +1,6 @@
 package com.yavasoglu.chatgptbackend.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -11,8 +8,10 @@ import lombok.Data;
 @Data
 public class User {
     @Id
-    private String id;
-    private String username;
-    private String progress;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int completionId;
+    private String userId;
+    private boolean completed;
+    private String weekNo;
 
 }

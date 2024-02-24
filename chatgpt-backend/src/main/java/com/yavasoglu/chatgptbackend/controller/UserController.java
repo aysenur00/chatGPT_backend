@@ -5,12 +5,11 @@ import com.yavasoglu.chatgptbackend.entity.WeeklyContent;
 import com.yavasoglu.chatgptbackend.service.UserService;
 import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import com.yavasoglu.chatgptbackend.entity.User;
 
 @RestController
-@NoArgsConstructor
 @RequestMapping("/api")
 public class UserController {
-
     UserService userService;
 
     public UserController(UserService userService) {
@@ -18,8 +17,7 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public void markWeekAsCompleted(@RequestBody MarkCompletedRequest request) {
-
+    public void markWeekAsCompleted(@RequestBody User request) {
         userService.markWeekAsCompleted(request);
     }
 
