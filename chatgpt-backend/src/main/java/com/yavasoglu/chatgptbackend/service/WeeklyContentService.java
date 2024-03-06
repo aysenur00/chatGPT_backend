@@ -38,7 +38,7 @@ public class WeeklyContentService {
             existingWeeklyContent.setOutcome(updatedWeeklyContent.getOutcome());
             existingWeeklyContent.setFeedbackURL(updatedWeeklyContent.getFeedbackURL());
             existingWeeklyContent.setSlidesURL(updatedWeeklyContent.getSlidesURL());
-            existingWeeklyContent.setQuizzes(updatedWeeklyContent.getQuizzes());
+            //existingWeeklyContent.setQuizzes(updatedWeeklyContent.getQuizzes());
             weeklyContentRepository.save(existingWeeklyContent);
         });
 

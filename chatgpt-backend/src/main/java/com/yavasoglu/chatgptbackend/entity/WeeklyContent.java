@@ -25,7 +25,7 @@ public class WeeklyContent {
     @Column(length = 2083)
     private String slidesURL;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name= "fk_week_id")
-    private List<Quiz> quizzes;
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name= "fk_week_id")
+//    private List<Quiz> quizzes;
 }
