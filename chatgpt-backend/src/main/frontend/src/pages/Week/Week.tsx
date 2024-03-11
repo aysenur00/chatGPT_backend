@@ -28,8 +28,9 @@ export default function Week() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const apiUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
     if (id) {
-      fetch(`http://localhost:8080/api/weekly-contents/${id}`)
+      fetch(`${apiUrl}/api/weekly-contents/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setContent(data);
@@ -56,9 +57,10 @@ export default function Week() {
 
 
   function markComplete() {
-    const apiUrl = `http://localhost:8080/api/users`
+    const apiUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+    const fetchUrl = `${apiUrl}/api/users`
 
-    fetch(apiUrl, {
+    fetch(fetchUrl, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -86,8 +88,9 @@ export default function Week() {
   const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
+    const apiUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
     if (userId && week_no) {
-      fetch(`http://localhost:8080/api/users/completed-status?userId=${userId}&weekNo=${week_no}`)
+      fetch(`${apiUrl}/api/users/completed-status?userId=${userId}&weekNo=${week_no}`)
         .then(res => res.json())
         .then((data) => {
           setCompleted(data.completed);

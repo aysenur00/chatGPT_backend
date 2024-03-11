@@ -23,7 +23,8 @@ export default function Learn() {
     const [completedWeeks, setCompletedWeeks] = useState<string[]>([]);
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/weekly-contents')
+        const apiUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+        fetch(`${apiUrl}/api/weekly-contents`)
             .then((res) => {
                 return res.json();
             })
@@ -35,7 +36,8 @@ export default function Learn() {
 
     useEffect(() => {
         if (userId) {
-            fetch(`http://localhost:8080/api/users/completed-weeks?userId=${userId}`)
+            const apiUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+            fetch(`${apiUrl}/api/users/completed-weeks?userId=${userId}`)
                 .then(res => res.json())
                 .then((data) => {
                     setCompletedWeeks(data)
