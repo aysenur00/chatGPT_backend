@@ -1,19 +1,11 @@
 import { Link } from 'react-router-dom';
 import {
-  HoverCard,
   Group,
   Button,
-  UnstyledButton,
-  Text,
-  SimpleGrid,
-  ThemeIcon,
-  Anchor,
   Divider,
-  Center,
   Box,
   Burger,
   Drawer,
-  Collapse,
   ScrollArea,
   rem,
   useMantineTheme,
@@ -24,19 +16,8 @@ import {
   useComputedColorScheme,
   Space
 } from '@mantine/core';
-import { MantineLogo } from '@mantinex/mantine-logo';
 import { useDisclosure } from '@mantine/hooks';
-import {
-  IconNotification,
-  IconCode,
-  IconBook,
-  IconChartPie3,
-  IconFingerprint,
-  IconCoin,
-  IconChevronDown,
-} from '@tabler/icons-react';
 import classes from './HeaderMegaMenu.module.css';
-import { SignIn, SignInButton } from '@clerk/clerk-react';
 import { useAuth, UserButton } from '@clerk/clerk-react';
 
 
@@ -50,29 +31,25 @@ export function HeaderMegaMenu() {
     setColorScheme(computedColorScheme === 'dark' ? 'light' : 'dark')
   }
 
-
   const theme = useMantineTheme();
-
   const { userId, isLoaded} = useAuth();
-
 
   if(!isLoaded){
     return null;
   }
 
-
-
   return (
     <Box pb={40}>
       <Space />
       <header className={classes.header}>
-        <Group justify="space-between" h="100%">
+        <Group justify="space-between" h="100%" px={22}>
           <Title order={3}>GPT Teaches</Title>
           {/* right */}
           <div style={{ flex: 1 }}></div>
           <Container style={{ display: 'flex', alignItems: 'center' }} visibleFrom="sm">
             <NavLink label="Home" className={classes.link} component={Link} to="/" />
             <NavLink label="Learn" className={classes.link} component={Link} to="/learn" />
+            <NavLink label="Explore" className={classes.link} component={Link} to="/explore" />
             <NavLink label="About" className={classes.link} component={Link} to="/about" />
           </Container>
           <Button size="compact-md" variant="default" onClick={toggleScheme}>
@@ -126,6 +103,7 @@ export function HeaderMegaMenu() {
 
           <NavLink label="Home" className={classes.link} component={Link} to="/" />
           <NavLink label="Learn" className={classes.link} component={Link} to="/learn" />
+          <NavLink label="Explore" className={classes.link} component={Link} to="/explore" />
           <NavLink label="About" className={classes.link} component={Link} to="/about" />
 
           <Divider my="sm" />
