@@ -5,6 +5,7 @@ import com.yavasoglu.chatgptbackend.repository.ArticleRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -22,6 +23,9 @@ public class ArticleService {
         return articleRepository.findById(id).orElse(null);
     }
     public void addArticle(Article article){
+        // Decode Base64 encoded html before saving
+        String decoded = decodeBase64(article.getContent());
+        article.setContent(decoded);
         articleRepository.save(article);
 
     }
@@ -30,7 +34,9 @@ public class ArticleService {
                 {
                     existingArticle.setTitle(updatedArticle.getTitle());
                     existingArticle.setDateOfAdd(updatedArticle.getDateOfAdd());
-                    existingArticle.setContent(updatedArticle.getContent());
+                    // Decode the Base64-encoded HTML content before updating
+                    String decodedContent = decodeBase64(updatedArticle.getContent());
+                    existingArticle.setContent(decodedContent);
                 }
                 );
     }
@@ -41,6 +47,10 @@ public class ArticleService {
         }else{
             throw new EntityNotFoundException(("Article with id" + id + "does not exist."));
         }
+    }
+    private String decodeBase64(String encodedString){
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+        return new String(decodedBytes);
     }
 
 }

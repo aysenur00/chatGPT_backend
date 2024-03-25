@@ -16,6 +16,12 @@ interface Article {
     title: string;
     dateOfAdd: string;
 }
+const intro = "\n" +
+    "Are you new to computer security? This section is just for you. " +
+    "Here, we'll provide comprehensive resources, beginner-friendly tutorials, " +
+    "and practical tips to help you navigate the complexities of cybersecurity with" +
+    " confidence. Whether you're looking to understand the basics or seeking guidance " +
+    "on where to begin, you're in the right place. Let's embark on this learning journey together.";
 
 export default function Explore() {
     const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
@@ -59,7 +65,7 @@ export default function Explore() {
 
             <Paper p="xl">
                 <Title order={1}>LATEST ARTICLES</Title>
-                <Text size='md' c="dimmed">learn here</Text>
+                <Text size='md' c="dimmed">{intro}</Text>
             </Paper>
             <Center>
                 <div style={{width: '75%'}}> {/* Set the desired width for the divider */}

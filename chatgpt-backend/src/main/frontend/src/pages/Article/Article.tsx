@@ -1,4 +1,4 @@
-import {Button, Center, Container, Divider, List, Paper, SimpleGrid, Space, Text, Title} from "@mantine/core";
+import {Button, Divider, Paper, Space, Text, Title} from "@mantine/core";
 import {IconArrowLeft} from "@tabler/icons-react";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
@@ -33,13 +33,19 @@ export default function Article() {
 
                 <Title order={1}>{content.title}</Title>
                 <Divider my="md"/>
-                <Text fw={700}>
-                    {content.content}
-                </Text>
-                <Space my="xs"/>
-                <Button variant='transparent' c="gray" size="compact-md" onClick={() => navigate(-1)}><IconArrowLeft size={14} />
-                    <span>&nbsp;</span>Go back
-                </Button>
+                {content.content ? (
+                    <>
+                        <div dangerouslySetInnerHTML={{__html: content.content}}></div>
+                        <Space my="xs"/>
+                        <Button variant='transparent' c="gray" size="compact-md"
+                                onClick={() => navigate(-1)}><IconArrowLeft size={14}/>
+                            <span>&nbsp;</span>Go back
+                        </Button>
+                    </>
+                ) : (
+                    <Text>Loading...</Text>
+                )}
+
 
             </Paper>
 
