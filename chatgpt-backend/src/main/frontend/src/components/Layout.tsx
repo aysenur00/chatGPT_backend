@@ -10,7 +10,7 @@ function Layout(){
         <>
         <HeaderMegaMenu />
         <Outlet />
-        {/* <FooterSocial /> */}
+        <FooterSocial />
         </>
     )
 }
