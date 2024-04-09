@@ -27,9 +27,9 @@ export default function Article() {
 
 
     return (
-        <div style={{width: "900px", margin: "0 auto"}}>
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
 
-            <Paper shadow="xl" p="xl" style={{textAlign: 'left'}}>
+            <Paper shadow="xl" p={{ xs: "sm", md: "xl" }}  style={{textAlign: 'left'}}>
 
                 <Title order={1}>{content.title}</Title>
                 <Divider my="md"/>

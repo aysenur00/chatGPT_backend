@@ -1,6 +1,5 @@
-import { Image, Container, Title, Button, Group, Text, List, ThemeIcon, rem, Space } from '@mantine/core';
+import { Container, Title, Button, Text, Space } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import { IconCheck } from '@tabler/icons-react';
 import classes from './HeroBullets.module.css';
 
 function HeroBullets() {

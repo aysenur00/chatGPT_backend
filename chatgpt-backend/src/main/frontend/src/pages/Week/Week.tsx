@@ -1,5 +1,5 @@
-import { Button, Title, Container, Grid, Skeleton, rem, Group, Paper, Text, Space, Divider, List, Rating, SimpleGrid, Badge, Center } from '@mantine/core'
-import { RedirectToSignIn, SignInButton, SignOutButton, SignedIn, SignedOut, useAuth } from '@clerk/clerk-react';
+import { Button, Title, Container, Paper, Text, Space, Divider, List, SimpleGrid, Badge, Center } from '@mantine/core'
+import {  useAuth } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -102,9 +102,9 @@ export default function Week() {
 
   return (
     <>
-      <div style={{ width: "900px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
 
-        <Paper shadow="xl" p="xl" style={{ textAlign: 'left' }}>
+        <Paper shadow="xl" p={{ xs: "sm", md: "xl" }} style={{ textAlign: 'left' }}>
 
 
           <Title order={1}>{content.title}</Title>

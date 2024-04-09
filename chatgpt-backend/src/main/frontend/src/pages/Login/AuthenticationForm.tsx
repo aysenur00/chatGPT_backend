@@ -1,17 +1,4 @@
-import {
-  TextInput,
-  PasswordInput,
-  Checkbox,
-  Anchor,
-  Paper,
-  Title,
-  Text,
-  Container,
-  Group,
-  Button,
-  Space,
-  Divider
-} from '@mantine/core';
+import {Container} from '@mantine/core';
 import classes from './AuthenticationForm.module.css';
 import { useState } from 'react';
 import { SignIn } from '@clerk/clerk-react';

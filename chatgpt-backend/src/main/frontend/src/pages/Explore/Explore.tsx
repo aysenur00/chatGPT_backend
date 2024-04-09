@@ -65,7 +65,7 @@ export default function Explore() {
 
             <Paper p="xl">
                 <Title order={1}>LATEST ARTICLES</Title>
-                <Text size='md' c="dimmed">{intro}</Text>
+                <Text size='md' c="dimmed">stay updated with latest articles</Text>
             </Paper>
             <Center>
                 <div style={{width: '75%'}}> {/* Set the desired width for the divider */}
