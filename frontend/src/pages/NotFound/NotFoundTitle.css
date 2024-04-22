@@ -1,0 +1,26 @@
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Make the container take the full height of the viewport */
+  }
+  
+  .not-found-number {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #08f808; /* Set your desired color */
+  }
+  
+  .not-found-title {
+    margin-top: 10px; /* Adjust the margin based on your design */
+  }
+  
+  .not-found-text {
+    margin-top: 20px; /* Adjust the margin based on your design */
+  }
+  
+  .not-found-group {
+    margin-top: 20px; /* Adjust the margin based on your design */
+  }
+  
