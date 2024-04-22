@@ -1,0 +1,29 @@
+services:
+  mysql-db:
+    image: mysql:8.0.34
+    container_name: chatgpt-mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: l780hsA67-shA5DdLfu85sf
+      MYSQL_DATABASE: chatgpt_db
+  chatgpt-be:
+    image: chatgpt-be
+    container_name: chatgpt-be
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+    tty: true
+  chatgpt-fe:
+    image: 08b6d
+    container_name: chatgpt-fe
+    ports:
+      - "3000:3000"
+    depends_on:
+      - chatgpt-be
+    
+volumes:
+  dbdata: 
