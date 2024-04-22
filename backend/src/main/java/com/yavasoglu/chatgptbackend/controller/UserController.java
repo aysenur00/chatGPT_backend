@@ -1,10 +1,7 @@
 package com.yavasoglu.chatgptbackend.controller;
 
-import com.yavasoglu.chatgptbackend.entity.MarkCompletedRequest;
-import com.yavasoglu.chatgptbackend.entity.WeeklyContent;
 import com.yavasoglu.chatgptbackend.entity.response.CompletedResponse;
 import com.yavasoglu.chatgptbackend.service.UserService;
-import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.yavasoglu.chatgptbackend.entity.User;
