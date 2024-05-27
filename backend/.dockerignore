@@ -1,0 +1,9 @@
+# Ignore all files and directories except those explicitly specified
+**/*
+
+# Allow Dockerfile and .dockerignore
+!Dockerfile
+!.dockerignore
+
+# Allow src directory
+!target/
