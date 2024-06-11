@@ -7,6 +7,7 @@ import Week from './pages/Week/Week';
 import About from './pages/About/About';
 import Explore from './pages/Explore/Explore';
 import Article from "./pages/Article/Article";
+import Train from "./pages/Train/Train";
 import { AuthenticationForm } from './pages/Login/AuthenticationForm'
 import { Register } from './pages/Register/Register';
 import { NotFoundTitle } from './pages/NotFound/NotFoundTitle';
@@ -23,6 +24,7 @@ function App() {
               <Route path="/explore" element={<Explore />} />
               <Route path="/explore/:id" element={<Article />} />
               <Route path="/about" element={<About />} />
+              <Route path="/train" element={<Train />} />
               <Route path="/login" element={<AuthenticationForm />}></Route>
               <Route path="/signup" element={<Register />}></Route>
             </Route>

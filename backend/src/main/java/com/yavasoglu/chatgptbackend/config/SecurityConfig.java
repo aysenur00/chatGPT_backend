@@ -30,7 +30,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-                                .requestMatchers(HttpMethod.POST).hasRole("admin")
+                                // .requestMatchers(HttpMethod.POST, "/api/train/message").permitAll()
+                                // .requestMatchers(HttpMethod.POST).hasRole("admin")
                                 .requestMatchers(HttpMethod.PUT, "/api/users").permitAll()
                                 .requestMatchers(HttpMethod.PUT).hasRole("admin")
                                 .requestMatchers(HttpMethod.DELETE).hasRole("admin")
