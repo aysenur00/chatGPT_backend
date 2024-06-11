@@ -101,16 +101,16 @@ export function HeaderMegaMenu() {
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
 
-          <NavLink label="Home" className={classes.link} component={Link} to="/" />
-          <NavLink label="Learn" className={classes.link} component={Link} to="/learn" />
-          <NavLink label="Explore" className={classes.link} component={Link} to="/explore" />
-          <NavLink label="About" className={classes.link} component={Link} to="/about" />
+          <NavLink label="Home" className={classes.link} component={Link} to="/" onClick={closeDrawer} />
+          <NavLink label="Learn" className={classes.link} component={Link} to="/learn" onClick={closeDrawer} />
+          <NavLink label="Explore" className={classes.link} component={Link} to="/explore" onClick={closeDrawer} />
+          <NavLink label="About" className={classes.link} component={Link} to="/about" onClick={closeDrawer} />
 
           <Divider my="sm" />
 
           {!userId && <Group justify="center" grow pb="xl" px="md">
-            <Button component="a" href="/login" variant="default">Log in</Button>
-            <Button component="a" href="/signup" >Sign up</Button>
+            <Button component="a" href="/login" variant="default" onClick={closeDrawer}>Log in</Button>
+            <Button component="a" href="/signup" onClick={closeDrawer}>Sign up</Button>
           </Group>}
         </ScrollArea>
 
