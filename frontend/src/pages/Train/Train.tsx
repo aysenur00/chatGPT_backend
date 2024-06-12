@@ -18,7 +18,7 @@ export default function Train() {
 
       })
 
-      const data = await res.json();
+      const data = await res.text();
       setResponse(data)
     } catch (error) {
         console.error(error)
