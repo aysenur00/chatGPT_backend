@@ -6,8 +6,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,38 +23,81 @@ public class ChatService {
     @Value("${openaiApiKey}")
     private String apiKey;
 
-    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
+    private static final String THREAD_API_URL = "https://api.openai.com/v1/threads";
+    private static final String MSG_API_URL = "https://api.openai.com/v1/threads/{threadId}/messages";
+    private static final String RUN_API_URL = "https://api.openai.com/v1/threads/{threadId}/runs";
+    private static final String RUN_STATUS_URL = "https://api.openai.com/v1/threads/{threadId}/runs/{runId}";
 
-    public String getChatResponse(String prompt){
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", "gpt-3.5-turbo");
-        requestBody.put("messages", List.of(Map.of("role", "user", "content", prompt)));
-        requestBody.put("max_tokens", 150);
 
-        try {
-            @SuppressWarnings("unchecked")
-            Map<String, Object> response = restTemplate.postForObject(API_URL, requestBody, Map.class);
-            
-            if (response != null && response.containsKey("choices")) {
-                Object choices = response.get("choices");
-                if (choices instanceof List) {
-                    @SuppressWarnings("unchecked")
-                    List<Map<String, Object>> choicesList = (List<Map<String, Object>>) choices;
-                    if (!choicesList.isEmpty()) {
-                        Map<String, Object> choice = choicesList.get(0);
-                        if (choice.containsKey("message")) {
-                            Map<String, Object> message = (Map<String, Object>) choice.get("message");
-                            if (message.containsKey("content")) {
-                                return (String) message.get("content");
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "An error occurred: " + e.getMessage();
-        }
-        return "No response";
+    public String createThread(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("OpenAI-Beta", "assistants=v2");
+
+        // Create an empty request body
+        String requestBody = "";
+
+        // Create the HTTP entity with headers and body
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+
+        // Make the request
+        ResponseEntity<String> response = restTemplate.exchange(THREAD_API_URL, HttpMethod.POST, entity, String.class);
+        
+        return response.getBody();
+    }
+
+    public Map<String, Object> sendMessage(String threadId, String prompt) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("OpenAI-Beta", "assistants=v2");
+
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("role", "user");
+        requestBody.put("content", prompt);
+
+        HttpEntity<Map<String, String>> entity = new HttpEntity<>(requestBody, headers);
+
+        String url = MSG_API_URL.replace("{threadId}", threadId);
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
+
+        return response.getBody();
+    }
+
+    public Map<String, Object> createRun(String threadId, String assistantId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("OpenAI-Beta", "assistants=v2");
+
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("assistant_id", assistantId);
+
+        HttpEntity<Map<String, String>> entity = new HttpEntity<>(requestBody, headers);
+
+        String url = RUN_API_URL.replace("{threadId}", threadId);
+
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
+
+        return response.getBody();
+    }
+
+    public Map<String, Object> getRunStatus(String threadId, String runId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("OpenAI-Beta", "assistants=v2");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        String url = RUN_STATUS_URL.replace("{threadId}", threadId).replace("{runId}", runId);
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+
+        return response.getBody();
+    }
+    
+    public Map<String, Object> getMessages(String threadId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("OpenAI-Beta", "assistants=v2");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        String url = MSG_API_URL.replace("{threadId}", threadId);
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+
+        return response.getBody();
     }
 }
