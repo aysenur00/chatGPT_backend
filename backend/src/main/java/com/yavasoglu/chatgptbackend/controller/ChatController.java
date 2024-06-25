@@ -21,13 +21,6 @@ public class ChatController {
     
     @Autowired
     private ChatService chatService;
-
-    // @PostMapping("/message")
-    // public ResponseEntity<String> getChatResponse(@RequestBody Map<String,String> request) {
-    //     String prompt = request.get("prompt");
-    //     String response = chatService.getChatResponse(prompt);
-    //     return ResponseEntity.ok(response);
-    // }
     
     @PostMapping("/create-thread")
     public String createThread() {
@@ -38,7 +31,8 @@ public class ChatController {
     public Map<String, Object> sendMessage(@RequestBody Map<String, String> request) {
         String threadId = request.get("threadId");
         String prompt = request.get("prompt");
-        return chatService.sendMessage(threadId, prompt);
+        String id = request.get("fileId");
+        return chatService.sendMessage(threadId, prompt, id);
     }
 
     @PostMapping("/create-run")

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Text, Title, TextInput, Box, Button, FileInput, Group, Paper } from '@mantine/core';
+import { Container, Text, Title, TextInput, Box, Button, FileInput, Group, Paper, Notification, Space } from '@mantine/core';
 import ReactMarkdown from 'react-markdown';
+
 
 export default function Train() {
   const [prompt, setPrompt] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [fileId, setFileId] = useState<string | null>(null);
   const [messages, setMessages] = useState<{ content: string, role: string }[]>([]);
   const [threadId, setThreadId] = useState("");
   const [runId, setRunId] = useState("");
+  const [fileUploadMessage, setFileUploadMessage] = useState<string | null>(null);
   const assistantId = "asst_BKG42zrrKsTauozSUinoW7ey";
 
   useEffect(() => {
@@ -35,19 +38,23 @@ export default function Train() {
     createThread();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setMessages(prev => [...prev, { content: prompt, role: 'user' }]); // Add user's message
     setPrompt(""); // Clear the input field after sending the message
     try {
       const apiUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 
+      const body: any = { threadId, prompt, role: "user" };
+      if (fileId) {
+        body.fileId = fileId;
+      }
       const res = await fetch(`${apiUrl}/api/train/send-message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ threadId, prompt })
+        body: JSON.stringify(body)
       });
 
       // Trigger the run after sending the message
@@ -63,12 +70,40 @@ export default function Train() {
       //setResponse(JSON.stringify(runData, null, 2));
       setRunId(runData.id);
       console.log("Run created");
-      
+
       pollRunStatus(threadId, runData.id);
 
     } catch (error) {
       console.error(error);
       setMessages(prev => [...prev, { content: 'An error occurred.', role: 'system' }]);
+    }
+  };
+
+  const handleUploadFile = async () => {
+    if (!file) return;
+    const apiUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch(`${apiUrl}/api/train/upload-file`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (res.ok) {
+        const data = await res.json(); // Parse the response body
+        console.log("File uploaded successfully");
+        console.log(data); // Log the parsed response
+        setFileId(data.id); // Store the file ID
+        setFileUploadMessage("File uploaded successfully");
+      } else {
+        console.error("File upload failed");
+        setMessages(prev => [...prev, { content: 'File upload failed.', role: 'system' }]);
+      }
+    } catch (error) {
+      console.error(error);
+      setMessages(prev => [...prev, { content: 'An error occurred during file upload.', role: 'system' }]);
     }
   };
 
@@ -119,7 +154,7 @@ export default function Train() {
       setMessages([{ content: 'An error occurred while fetching messages.', role: 'system' }]);
     }
   };
-  
+
 
   return (
     <Container size="sm" style={{ marginTop: '2rem', textAlign: 'left' }}>
@@ -142,7 +177,7 @@ export default function Train() {
           </Paper>
         ))}
       </Box>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSendMessage}>
         <TextInput
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
@@ -151,10 +186,28 @@ export default function Train() {
           required
           mt="md"
         />
+
         <Group mt="md">
-          <Button type="submit">Send</Button>
+          <Button color='#08f808' variant="light" radius="md" type="submit">Send</Button>
         </Group>
       </form>
+      <Box mt="md">
+        <FileInput
+          value={file}
+          onChange={setFile}
+          placeholder="Upload a file"
+          label="Upload a file"
+          clearable
+        />
+        <Group mt="md">
+          <Button color='#08f808' variant="light" radius="md" onClick={handleUploadFile}>Upload File</Button>
+        </Group>
+        <Space h="xs"/>
+        {fileUploadMessage && (
+          <Notification color='#08f808' onClose={() => setFileUploadMessage(null)}>{fileUploadMessage}</Notification>
+        )}
+      </Box>
+
     </Container>
   );
 }

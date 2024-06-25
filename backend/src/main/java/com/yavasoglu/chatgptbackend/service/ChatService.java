@@ -1,10 +1,12 @@
 package com.yavasoglu.chatgptbackend.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +34,7 @@ public class ChatService {
     public String createThread(){
         HttpHeaders headers = new HttpHeaders();
         headers.add("OpenAI-Beta", "assistants=v2");
+        headers.add("Content-Type", "application/json");
 
         // Create an empty request body
         String requestBody = "";
@@ -45,15 +48,26 @@ public class ChatService {
         return response.getBody();
     }
 
-    public Map<String, Object> sendMessage(String threadId, String prompt) {
+    public Map<String, Object> sendMessage(String threadId, String prompt, String fileId) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("OpenAI-Beta", "assistants=v2");
 
-        Map<String, String> requestBody = new HashMap<>();
+        Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("role", "user");
         requestBody.put("content", prompt);
 
-        HttpEntity<Map<String, String>> entity = new HttpEntity<>(requestBody, headers);
+        if (fileId != null && !fileId.isEmpty()) {
+            Map<String, Object> attachment = new HashMap<>();
+            attachment.put("file_id", fileId);
+            attachment.put("tools", List.of(Map.of("type", "file_search")));
+
+            List<Map<String, Object>> attachments = new ArrayList<>();
+            attachments.add(attachment);
+
+            requestBody.put("attachments", attachments);
+        }
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
 
         String url = MSG_API_URL.replace("{threadId}", threadId);
         ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
