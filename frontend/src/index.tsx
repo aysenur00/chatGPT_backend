@@ -25,9 +25,7 @@ root.render(
     }}
   >
     <MantineProvider defaultColorScheme="dark">
-      <React.StrictMode>
         <App />
-      </React.StrictMode>
     </MantineProvider>
   </ClerkProvider>
 );
