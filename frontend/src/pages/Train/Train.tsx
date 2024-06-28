@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Text, Title, TextInput, Box, Button, FileInput, Group, Paper, Notification, Space } from '@mantine/core';
+import { Container, Text, Title, TextInput, Box, Button, FileInput, Group, Paper, Notification, Space, Grid, Card } from '@mantine/core';
 import ReactMarkdown from 'react-markdown';
 
 
@@ -11,7 +11,16 @@ export default function Train() {
   const [threadId, setThreadId] = useState("");
   const [runId, setRunId] = useState("");
   const [fileUploadMessage, setFileUploadMessage] = useState<string | null>(null);
+  const [firstMessageSent, setFirstMessageSent] = useState(false);
   const assistantId = "asst_BKG42zrrKsTauozSUinoW7ey";
+
+
+  const prompts = [
+    "Grade the provided document out of 100. Explain the reasoning.",
+    "Summarize the provided slides.",
+    "Generate 5 questions about week 3's learning outcomes.",
+    "What is the curriculum for CENG482 Introduction to Computer Security?"
+  ]
 
   useEffect(() => {
     const createThread = async () => {
@@ -42,6 +51,7 @@ export default function Train() {
     e.preventDefault();
     setMessages(prev => [...prev, { content: prompt, role: 'user' }]); // Add user's message
     setPrompt(""); // Clear the input field after sending the message
+    setFirstMessageSent(true);
     try {
       const apiUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 
@@ -67,7 +77,6 @@ export default function Train() {
       });
 
       const runData = await runRes.json();
-      //setResponse(JSON.stringify(runData, null, 2));
       setRunId(runData.id);
       console.log("Run created");
 
@@ -155,9 +164,12 @@ export default function Train() {
     }
   };
 
+  const handleCardClick = (prompt: string) => {
+    setPrompt(prompt);
+  };
 
   return (
-    <Container size="sm" style={{ marginTop: '2rem', textAlign: 'left' }}>
+    <Container size="md" style={{ marginTop: '2rem', textAlign: 'left' }}>
       <Title order={2} mt="xl">
         Chat with Assistant
       </Title>
@@ -177,6 +189,16 @@ export default function Train() {
           </Paper>
         ))}
       </Box>
+      {!firstMessageSent && (<Grid mt="md">
+        {prompts.map((prompt, index) => (
+          <Grid.Col span={3} key={index}>
+            <Card shadow="sm" padding="lg" onClick={() => handleCardClick(prompt)}
+              style={{ cursor: 'pointer', height: '110px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Text>{prompt}</Text>
+            </Card>
+          </Grid.Col>
+        ))}
+      </Grid>)}
       <form onSubmit={handleSendMessage}>
         <TextInput
           value={prompt}
@@ -202,7 +224,7 @@ export default function Train() {
         <Group mt="md">
           <Button color='#08f808' variant="light" radius="md" onClick={handleUploadFile}>Upload File</Button>
         </Group>
-        <Space h="xs"/>
+        <Space h="xs" />
         {fileUploadMessage && (
           <Notification color='#08f808' onClose={() => setFileUploadMessage(null)}>{fileUploadMessage}</Notification>
         )}
