@@ -2,6 +2,7 @@ import {Button, Divider, Paper, Space, Text, Title} from "@mantine/core";
 import {IconArrowLeft} from "@tabler/icons-react";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 interface Content {
     title?: string;
@@ -35,7 +36,8 @@ export default function Article() {
                 <Divider my="md"/>
                 {content.content ? (
                     <>
-                        <div dangerouslySetInnerHTML={{__html: content.content}}></div>
+                        {/* <div dangerouslySetInnerHTML={{__html: content.content}}></div> */}
+                        <ReactMarkdown>{content.content}</ReactMarkdown>
                         <Space my="xs"/>
                         <Button variant='transparent' c="gray" size="compact-md"
                                 onClick={() => navigate(-1)}><IconArrowLeft size={14}/>
