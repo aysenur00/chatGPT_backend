@@ -191,7 +191,7 @@ export default function Train() {
       </Box>
       {!firstMessageSent && (<Grid mt="md">
         {prompts.map((prompt, index) => (
-          <Grid.Col span={3} key={index}>
+          <Grid.Col span={{ base: 6, md: 3 }} key={index}>
             <Card shadow="sm" padding="lg" onClick={() => handleCardClick(prompt)}
               style={{ cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Text>{prompt}</Text>
