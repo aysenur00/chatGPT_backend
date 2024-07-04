@@ -19,7 +19,7 @@ export default function Train() {
     "Grade the provided document out of 100. Explain the reasoning.",
     "Summarize the provided slides.",
     "Generate 5 questions about week 3's learning outcomes.",
-    "What is the curriculum for CENG482 Introduction to Computer Security?"
+    "What is the curriculum for CENG482?"
   ]
 
   useEffect(() => {
@@ -193,7 +193,7 @@ export default function Train() {
         {prompts.map((prompt, index) => (
           <Grid.Col span={3} key={index}>
             <Card shadow="sm" padding="lg" onClick={() => handleCardClick(prompt)}
-              style={{ cursor: 'pointer', height: '110px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              style={{ cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Text>{prompt}</Text>
             </Card>
           </Grid.Col>
